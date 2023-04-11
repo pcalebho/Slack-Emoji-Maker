@@ -1,10 +1,8 @@
 import numpy as np
 import tkinter as tk
 from tkinter import filedialog
-from tkinter import ttk
-from math import *
-import numpy
 import os
+import numpy
 from PIL import Image, ImageDraw, ImageTk
 import time 
 import random as rand
