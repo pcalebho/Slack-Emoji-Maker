@@ -6,7 +6,7 @@ import time
 import random as rand
 
 class App:
-    file_path = ""
+    image_path = ""
     img_list = []
 
     def __init__(self, window, author, version):
@@ -46,6 +46,7 @@ class App:
         )
 
         self.label_png = tk.Label(master=frame_b)
+        
         self.label_instructions = tk.Label(
             master=frame_a, 
             text = "Works best on PNG\'s with transparent backgrounds",
@@ -55,22 +56,20 @@ class App:
         
         self.label_author = tk.Label(master = window, text= author + ' - ' + version) 
         
-
+        #pack all widgets into location
         self.label_instructions.pack()
         self.open_button.pack()
         self.shake_button.pack()
         self.spin_button.pack()
         self.label_png.pack()
-        self.label_author.pack(side = 'bottom', anchor = 'se')
-        # keep placing the label at bottom right corner
-        # self.label_author.place(bordermode= 'outside', anchor='sw')
-        
+        #pack label into bottom right corner
+        self.label_author.pack(side = 'bottom', anchor = 'se')        
 
         frame_a.pack(padx = 2, pady = 2)
         frame_b.pack(padx = 2, pady = 2)
 
     def browse_file(self):
-        self.file_path = filedialog.askopenfilename()
+        self.image_path = filedialog.askopenfilename()
         try:
             preview_pic = ImageTk.PhotoImage(self.read_resize(150))
             self.label_png["image"] = preview_pic
@@ -79,8 +78,8 @@ class App:
             pass
 
     def read_resize(self, pixel_width):
-        if(os.path.isfile(self.file_path)):
-            icon = Image.open(self.file_path)
+        if(os.path.isfile(self.image_path)):
+            icon = Image.open(self.image_path)
             basewidth = pixel_width
             wpercent = (basewidth/float(icon.size[0]))
             hsize = int((float(icon.size[1])*float(wpercent)))
@@ -94,10 +93,10 @@ class App:
         for degree in range(0, int(360-360/frames), int(360/frames)):
             angles.append(degree)
 
-        #angles = np.linspace(0, 360-360/frames, frames) So we don't have to use numpy
         xmax = 4
         ymax = 4
         
+        #Create frames for gif depending on desired effect.
         try:
             if movement == "spin":
                 for theta in angles:
