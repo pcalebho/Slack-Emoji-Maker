@@ -87,18 +87,19 @@ class App:
 
     def make_gif(self, movement, main):
         img = self.read_resize(150)
-        frames = 60
+        frames = 10
         angles = np.linspace(0, 360-360/frames, frames)
-        translations = {(0, rand.randint(-2, 2)), (1, rand.randint(-2, 2)), (2, rand.randint(-2, 2)), (1, rand.randint(-2, 2)),
-                        (0, rand.randint(-2, 2)), (-1, rand.randint(-2, 2)), (-2, rand.randint(-2, 2)), (-1, rand.randint(-2, 2))}
-
+        xmax = 4
+        ymax = 4
+        
         try:
             if movement == "spin":
                 for theta in angles:
                     self.img_list.append(img.rotate(angle=theta))
             elif movement == "shake":
-                for distance in translations:
-                    self.img_list.append(img.rotate(angle=0, translate=distance))
+                for i in range(frames):
+                    translation = (rand.randint(-xmax, xmax), rand.randint(-ymax, ymax))
+                    self.img_list.append(img.rotate(angle=0, translate= translation))
         except:
             pass  
         
@@ -109,7 +110,7 @@ class App:
             save_filename = filedialog.asksaveasfilename(
                     defaultextension=".gif")
             self.img_list[0].save(save_filename, format='GIF', save_all=True,
-                            append_images=self.img_list[1:], duration=40, loop=0, transparency=0, disposal=2)
+                            append_images=self.img_list[1:], duration=100, transparency = 0, loop=0, disposal=2)
             main.destroy()
         except:
             pass
