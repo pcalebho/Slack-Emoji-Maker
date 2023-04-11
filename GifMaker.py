@@ -1,8 +1,6 @@
-import numpy as np
 import tkinter as tk
 from tkinter import filedialog
 import os
-import numpy
 from PIL import Image, ImageDraw, ImageTk
 import time 
 import random as rand
@@ -11,7 +9,7 @@ class App:
     file_path = ""
     img_list = []
 
-    def __init__(self,window):
+    def __init__(self, window, author, version):
         frame_a = tk.Frame(window)
         frame_b = tk.Frame(window)
 
@@ -55,15 +53,21 @@ class App:
             pady = 5
         )
         
+        self.label_author = tk.Label(master = window, text= author + ' - ' + version) 
+        
+
         self.label_instructions.pack()
         self.open_button.pack()
         self.shake_button.pack()
         self.spin_button.pack()
         self.label_png.pack()
+        self.label_author.pack(side = 'bottom', anchor = 'se')
+        # keep placing the label at bottom right corner
+        # self.label_author.place(bordermode= 'outside', anchor='sw')
         
 
-        frame_a.pack()
-        frame_b.pack()
+        frame_a.pack(padx = 2, pady = 2)
+        frame_b.pack(padx = 2, pady = 2)
 
     def browse_file(self):
         self.file_path = filedialog.askopenfilename()
@@ -80,13 +84,17 @@ class App:
             basewidth = pixel_width
             wpercent = (basewidth/float(icon.size[0]))
             hsize = int((float(icon.size[1])*float(wpercent)))
-            icon = icon.resize((basewidth, hsize), Image.NEAREST)
+            icon = icon.resize((pixel_width, hsize), Image.NEAREST)
             return icon
 
     def make_gif(self, movement, main):
         img = self.read_resize(150)
         frames = 10
-        angles = np.linspace(0, 360-360/frames, frames)
+        angles = []
+        for degree in range(0, int(360-360/frames), int(360/frames)):
+            angles.append(degree)
+
+        #angles = np.linspace(0, 360-360/frames, frames) So we don't have to use numpy
         xmax = 4
         ymax = 4
         
@@ -115,7 +123,7 @@ class App:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    root.title('Make dumb slack emoji\'s from PNG\'s!')
+    root.title('Add effects to PNG\'s!')
     root.geometry("300x325")  
-    App(root)
+    App(root,'c.ho','v1.0')
     root.mainloop()
